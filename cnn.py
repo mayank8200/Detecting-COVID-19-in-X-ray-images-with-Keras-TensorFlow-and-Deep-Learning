@@ -5,7 +5,6 @@ from keras.layers import AveragePooling2D
 from keras.layers import Flatten
 from keras.layers import Dense
 from cv2 import cv2
-from skimage import exposure
 
 
 #Initializing CNN
@@ -84,7 +83,7 @@ else:
     prediction = 'Patient is Healthy'
 
 print("\nOutcome : ",prediction)   
-#classifier.save("model4.h5")
+classifier.save("model1.h5")
 
 
 
