@@ -1,7 +1,7 @@
 #Importing keras libraries and packages
 from keras.models import Sequential
 from keras.layers import Convolution2D
-from keras.layers import MaxPooling2D
+from keras.layers import AveragePooling2D
 from keras.layers import Flatten
 from keras.layers import Dense
 from cv2 import cv2
@@ -12,18 +12,15 @@ from skimage import exposure
 classifier = Sequential()
 
 #1Convolution
-classifier.add(Convolution2D(32,3,3,input_shape = (64,64,3), activation = 'relu'))
+classifier.add(Convolution2D(32,3,3,input_shape = (224,224,3), activation = 'relu'))
 
 #2Pooling
-classifier.add(MaxPooling2D(pool_size = (2,2)))
+classifier.add(AveragePooling2D(pool_size=(4, 4)))
 
-#adding 2nd and 3rd convolution layer
+#adding 2nd 3rd and 4th convolution layer
 classifier.add(Convolution2D(32,3,3, activation = 'relu'))
-classifier.add(MaxPooling2D(pool_size = (2,2)))
-classifier.add(Convolution2D(32,3,3, activation = 'relu'))
-classifier.add(MaxPooling2D(pool_size = (2,2)))
-classifier.add(Convolution2D(32,3,3, activation = 'relu'))
-classifier.add(MaxPooling2D(pool_size = (2,2)))
+classifier.add(AveragePooling2D(pool_size=(4, 4)))
+
 
 #3Flattening
 classifier.add(Flatten())
@@ -55,12 +52,12 @@ train_datagen = ImageDataGenerator(rescale = 1./255,
 test_datagen = ImageDataGenerator(rescale = 1./255)
 print("\nTraining the data...\n")
 training_set = train_datagen.flow_from_directory('train',
-                                                target_size=(64,64),
+                                                target_size=(224,224),
                                                 batch_size=32,
                                                 class_mode='binary')
 
 test_set = test_datagen.flow_from_directory('test',
-                                            target_size=(64,64),
+                                            target_size=(224,224),
                                             batch_size=32,
                                             class_mode='binary')
 
@@ -74,7 +71,7 @@ classifier.fit_generator(training_set,
 print("\nMaking predictions for uploaded X-ray...\n")
 import numpy as np
 from keras.preprocessing import image
-test_image = image.load_img('nocorona.jpg',target_size=(64,64))
+test_image = image.load_img('images//nocorona.jpg',target_size=(224,224))
 test_image = image.img_to_array(test_image)
 test_image = np.expand_dims(test_image, axis = 0)
 result = classifier.predict(test_image)
@@ -87,7 +84,7 @@ else:
     prediction = 'Patient is Healthy'
 
 print("\nOutcome : ",prediction)   
-classifier.save("model4.h5")
+#classifier.save("model4.h5")
 
 
 
