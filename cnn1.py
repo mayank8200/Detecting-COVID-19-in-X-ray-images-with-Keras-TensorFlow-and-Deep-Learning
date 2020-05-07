@@ -62,12 +62,31 @@ test_set = test_datagen.flow_from_directory('test',
 
 classifier.fit_generator(training_set,
                          samples_per_epoch=420,
-                         nb_epoch = 2,
+                         nb_epoch = 1,
                          validation_data =test_set,
                          nb_val_samples = 25)
 
+#Making new predictions
+print("\nMaking predictions for uploaded X-ray...\n")
+import numpy as np
+from keras.preprocessing import image
+test_image = image.load_img('images//nocorona.jpg',target_size=(224,224))
+test_image = image.img_to_array(test_image)
+test_image = np.expand_dims(test_image, axis = 0)
+result = classifier.predict(test_image)
+(covid,nocovid) = classifier.predict(test_image)[0]
+prob = covid if covid > nocovid else nocovid
+print(prob*100)
+training_set.class_indices
+if result[0][0] == 0:
 
-classifier.save("model1.h5")
+    prediction = 'Patient is affected with Corona'
+else:
+    prediction = 'Patient is Healthy'
+
+print("\nOutcome : ",prediction)
+print(prob*100)
+ 
 
 
 
