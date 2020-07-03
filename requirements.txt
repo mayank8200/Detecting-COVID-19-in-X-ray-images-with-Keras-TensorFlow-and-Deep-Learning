@@ -3,7 +3,6 @@ Flask==1.0.2
 Keras==2.2.4
 Keras-Applications==1.0.7
 Keras-Preprocessing==1.0.9
-numba==0.42.0
 numpy==1.16.1
 opencv-python==4.1.0.25
 PyYAML==3.13
