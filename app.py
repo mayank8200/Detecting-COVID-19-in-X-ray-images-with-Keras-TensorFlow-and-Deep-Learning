@@ -39,7 +39,7 @@ def upload():
         from keras.models import load_model
         new_model = load_model('model1.h5')
         new_model.summary()
-        test_image = image.load_img('images\\'+filename,target_size=(224,224))
+        test_image = image.load_img(destination+filename,target_size=(224,224))
         test_image = image.img_to_array(test_image)
         test_image = np.expand_dims(test_image, axis = 0)
         result = new_model.predict(test_image)
